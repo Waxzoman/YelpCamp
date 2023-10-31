@@ -24,7 +24,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campground');
 const reviewRoutes = require('./routes/reviews')
-const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp'
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!'
+const dbUrl = process.env.DB_URL
 //'mongodb://127.0.0.1:27017/yelp-camp'
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp');
 
@@ -46,7 +47,7 @@ app.use(mongoSanitize());
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
-    secret: 'thisshouldbeabettersecret!'
+    secret 
 });
 
 store.on('error', function (e) {
@@ -56,7 +57,7 @@ store.on('error', function (e) {
 const sessionConfig = {
     store,
     name: '#$3szNk0nfg',
-    secret: ' thisshouldbeabettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie:{
